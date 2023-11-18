@@ -14,3 +14,9 @@ Each sample has an amplitude between -1 and 1.
 To process the first sample (the sample at index 0) the absolute value of its amplitude (basically dropping the negative sign if there is one) is multiplied by some constant (determined by the parameter `Amount`) then rounded down to an integer.
 Suppose the first sample (the sample at index 0) has amplitude 0.3, and `Amount` is set to 10, then the calculated value is 0.3*10=3
 3 steps in then taken from this sample, arriving at the fourth sample (sample at index 3). The first sample is then assigned the amplitude of the fourth sample.
+
+## Parameters
+`Amount` - The maximum time shifting distance, measured in samples.
+`Curve` - The curve/tension in the time shifting calculation.
+- At 1.0, it behaves as a linear line, meaning more dynamics, shorted duration of distortion
+- At 0.5, it behaves as a square root curve, meaning less dynamics, longer distortion
