@@ -1,6 +1,8 @@
 use nih_plug::prelude::*;
-use nih_plug_egui::{create_egui_editor, egui, widgets, EguiState};
+use nih_plug_vizia::ViziaState;
 use std::sync::Arc;
+
+mod editor;
 
 // The maximum deviation from the actual sample position
 pub const MAX_AMOUNT: usize = 64;
@@ -19,7 +21,7 @@ struct DustSaturatorParams {
     /// parameters are exposed to the host in the same order they were defined. In this case, this
     /// gain parameter is stored as linear gain while the values are displayed in decibels.
     #[persist = "editor-state"]
-    editor_state: Arc<EguiState>,
+    editor_state: Arc<ViziaState>,
 
     #[id = "amount"]
     pub amount: IntParam,
@@ -43,7 +45,7 @@ impl Default for DustSaturatorParams {
             // This gain is stored as linear gain. NIH-plug comes with useful conversion functions
             // to treat these kinds of parameters as if we were dealing with decibels. Storing this
             // as decibels is easier to work with, but requires a conversion for every sample.
-            editor_state: EguiState::from_size(300, 180),
+            editor_state: editor::default_state(),
 
             amount: IntParam::new(
                 "Amount",
@@ -106,23 +108,9 @@ impl Plugin for DustSaturator {
     }
 
     fn editor(&mut self, _async_executor: AsyncExecutor<Self>) -> Option<Box<dyn Editor>> {
-        let params = self.params.clone();
-        create_egui_editor(
+        editor::create(
+            self.params.clone(),
             self.params.editor_state.clone(),
-            (),
-            |_, _| {},
-            move |egui_ctx, setter, _state| {
-                egui::CentralPanel::default().show(egui_ctx, |ui| {
-                    ui.label("Amount");
-                    ui.add(widgets::ParamSlider::for_param(&params.amount, setter));
-
-                    ui.label("Curve");
-                    ui.add(widgets::ParamSlider::for_param(&params.curve, setter));
-
-                    ui.allocate_space(egui::Vec2::splat(2.0));
-
-                });
-            },
         )
     }
 
