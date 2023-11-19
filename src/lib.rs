@@ -6,7 +6,9 @@ mod editor;
 
 // The maximum deviation from the actual sample position
 pub const MAX_AMOUNT: usize = 64;
+// Max value for curve parameter
 pub const MAX_CURVE: f32 = 1.0;
+// Min value for curve parameter
 pub const MIN_CURVE: f32 = 0.5;
 
 pub struct DustSaturator {
@@ -16,10 +18,6 @@ pub struct DustSaturator {
 
 #[derive(Params)]
 struct DustSaturatorParams {
-    /// The parameter's ID is used to identify the parameter in the wrappred plugin API. As long as
-    /// these IDs remain constant, you can rename and reorder these fields as you wish. The
-    /// parameters are exposed to the host in the same order they were defined. In this case, this
-    /// gain parameter is stored as linear gain while the values are displayed in decibels.
     #[persist = "editor-state"]
     editor_state: Arc<ViziaState>,
 
@@ -42,9 +40,6 @@ impl Default for DustSaturator {
 impl Default for DustSaturatorParams {
     fn default() -> Self {
         Self {
-            // This gain is stored as linear gain. NIH-plug comes with useful conversion functions
-            // to treat these kinds of parameters as if we were dealing with decibels. Storing this
-            // as decibels is easier to work with, but requires a conversion for every sample.
             editor_state: editor::default_state(),
 
             amount: IntParam::new(
@@ -73,8 +68,6 @@ impl Plugin for DustSaturator {
 
     const VERSION: &'static str = env!("CARGO_PKG_VERSION");
 
-    // The first audio IO layout is used as the default. The other layouts may be selected either
-    // explicitly or automatically by the host or the user depending on the plugin API/backend.
     const AUDIO_IO_LAYOUTS: &'static [AudioIOLayout] = &[
         AudioIOLayout {
             main_input_channels: NonZeroU32::new(2),
@@ -94,13 +87,7 @@ impl Plugin for DustSaturator {
 
     const SAMPLE_ACCURATE_AUTOMATION: bool = true;
 
-    // If the plugin can send or receive SysEx messages, it can define a type to wrap around those
-    // messages here. The type implements the `SysExMessage` trait, which allows conversion to and
-    // from plain byte buffers.
     type SysExMessage = ();
-    // More advanced plugins can use this to run expensive background tasks. See the field's
-    // documentation for more information. `()` means that the plugin does not have any background
-    // tasks.
     type BackgroundTask = ();
 
     fn params(&self) -> Arc<dyn Params> {
@@ -120,17 +107,14 @@ impl Plugin for DustSaturator {
         buffer_config: &BufferConfig,
         context: &mut impl InitContext<Self>,
     ) -> bool {
-        // Resize buffers and perform other potentially expensive initialization operations here.
-        // The `reset()` function is always called right after this function. You can remove this
-        // function if you do not need it.
+        // Set the latency (this is assuming buffer size is fixed)
         context.set_latency_samples(buffer_config.max_buffer_size);
 
         true
     }
 
     fn reset(&mut self) {
-        // Reset buffers and envelopes here. This can be called from the audio thread and may not
-        // allocate. You can remove this function if you do not need it.
+        // Unused at the moment
     }
 
     fn process(
@@ -200,14 +184,12 @@ impl ClapPlugin for DustSaturator {
     const CLAP_MANUAL_URL: Option<&'static str> = Some(Self::URL);
     const CLAP_SUPPORT_URL: Option<&'static str> = None;
 
-    // Don't forget to change these features
     const CLAP_FEATURES: &'static [ClapFeature] = &[ClapFeature::AudioEffect, ClapFeature::Stereo];
 }
 
 impl Vst3Plugin for DustSaturator {
     const VST3_CLASS_ID: [u8; 16] = *b"Exactly16Chars!!";
 
-    // And also don't forget to change these categories
     const VST3_SUBCATEGORIES: &'static [Vst3SubCategory] =
         &[Vst3SubCategory::Fx, Vst3SubCategory::Dynamics];
 }
