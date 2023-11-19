@@ -168,7 +168,7 @@ impl Plugin for DustSaturator {
                         continue
                     }
                     let idx = (
-                        (((self.previous_buffer[channel_number][i]*(amount as f32)).powf(curve)) * ((amount as f32).powf(MAX_CURVE-curve))).abs()
+                        (((self.previous_buffer[channel_number][i]*(amount as f32)).abs()).powf(curve)) * ((amount as f32).powf(MAX_CURVE-curve))
                     ) as usize;
                     if i+idx < self.previous_buffer[channel_number].len() {
                         // When the future sample does not exceed the bounds of the current buffer
