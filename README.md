@@ -25,3 +25,14 @@ Take 3 steps from this sample, arriving at the fourth sample (sample at index 3)
 
 - At 1.0, it behaves as a linear line, meaning more dynamics, shortened duration of distortion
 - At 0.5, it behaves as a square root curve, meaning less dynamics, longer distortion
+
+## Setup
+Currently, this plugin assumes fixed size buffers. Please ensure your DAW is using fixed size buffers.
+
+In FL Studio, this is done by going to:
+
+VST wrapper settings > Troubleshooting > Use fixed sized buffers 
+
+and enabling it.
+
+![image](https://github.com/Everither/dust-saturation/assets/122586326/9eaeeb81-dd1c-475d-b329-a613cbeda0bc)
