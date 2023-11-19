@@ -4,7 +4,7 @@ A distortion plugin with a very unique distortion algorithm. Adding upper harmon
 
 Built with the [NIH-plug](https://github.com/robbert-vdh/nih-plug) framework and the [VIZIA](https://github.com/vizia/vizia) UI library.
 
-![image](https://github.com/Everither/dust-saturation/assets/122586326/bfbe5667-9f69-4be0-8564-16ff46bb55eb)
+![Dust Saturator Cover](https://github.com/Everither/dust-saturator/assets/122586326/2209e888-3313-405d-9ddc-4125b8f117b8)
 
 ## How It Works
 
@@ -35,7 +35,7 @@ In FL Studio, this is done by going to:
 
 and enabling it.
 
-![image](https://github.com/Everither/dust-saturation/assets/122586326/9eaeeb81-dd1c-475d-b329-a613cbeda0bc)
+![Dust Saturator Setup](https://github.com/Everither/dust-saturator/assets/122586326/4a50dc36-f73f-4eee-87f8-6821322f916e)
 
 ## Installation
 Download dust_saturator_v0.1.0.vst3.zip from [Releases](https://github.com/Everither/dust-saturation/releases/tag/v0.1.0), unzip and place in your VST3 folder. 
