@@ -1,6 +1,8 @@
 # Dust Saturator
 
-A distortion plugin with a very unique distortion algorithm. Built with the [NIH-plug](https://github.com/robbert-vdh/nih-plug) framework and the [VIZIA](https://github.com/vizia/vizia) UI library.
+A distortion plugin with a very unique distortion algorithm. Adding upper harmonics to the sound source while introducing a sandy texture. Fully preserves the dynamics of the sound (i.e. peaks of the waveform does not get clamped at all).
+
+Built with the [NIH-plug](https://github.com/robbert-vdh/nih-plug) framework and the [VIZIA](https://github.com/vizia/vizia) UI library.
 
 ![Dust Saturator Cover](https://github.com/Everither/dust-saturation/assets/122586326/f42a1910-2130-4296-8e5c-1ca55c573f06)
 
