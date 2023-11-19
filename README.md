@@ -36,3 +36,6 @@ VST wrapper settings > Troubleshooting > Use fixed sized buffers
 and enabling it.
 
 ![image](https://github.com/Everither/dust-saturation/assets/122586326/9eaeeb81-dd1c-475d-b329-a613cbeda0bc)
+
+## Installation
+Download dust_saturator_v0.1.0.vst3.zip from [Releases](https://github.com/Everither/dust-saturation/releases/tag/v0.1.0), unzip and place in your VST3 folder. 
