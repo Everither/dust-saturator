@@ -31,7 +31,7 @@ Currently, this plugin assumes fixed size buffers. Please ensure your DAW is usi
 
 In FL Studio, this is done by going to:
 
-VST wrapper settings > Troubleshooting > Use fixed sized buffers 
+```VST wrapper settings > Troubleshooting > Use fixed sized buffers ```
 
 and enabling it.
 
