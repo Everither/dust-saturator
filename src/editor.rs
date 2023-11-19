@@ -55,7 +55,7 @@ pub(crate) fn create(
             .color(Color::white())
             .border_color(Color::white());
 
-            Label::new(cx, "Version: 1.0.0")
+            Label::new(cx, "Version: 0.1.0")
             .font_size(11.0)
             .child_top(Pixels(40.0))
             .color(Color::rgb(170, 170, 170));
