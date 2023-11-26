@@ -26,16 +26,5 @@ Take 3 steps from this sample, arriving at the fourth sample (sample at index 3)
 - At 1.0, it behaves as a linear line, meaning more dynamics, shortened duration of distortion
 - At 0.5, it behaves as a square root curve, meaning less dynamics, longer distortion
 
-## Setup
-Currently, this plugin assumes fixed size buffers. Please ensure your DAW is using fixed size buffers.
-
-In FL Studio, this is done by going to:
-
-```VST wrapper settings > Troubleshooting > Use fixed sized buffers ```
-
-and enabling it.
-
-![Dust Saturator Setup](https://github.com/Everither/dust-saturator/assets/122586326/4a50dc36-f73f-4eee-87f8-6821322f916e)
-
 ## Installation
 Download dust_saturator_v0.1.0.vst3.zip from [Releases](https://github.com/Everither/dust-saturation/releases/tag/v0.1.0), unzip and place in your VST3 folder. 
