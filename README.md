@@ -4,7 +4,7 @@ A distortion plugin with a very unique distortion algorithm. Adding upper harmon
 
 Built with the [NIH-plug](https://github.com/robbert-vdh/nih-plug) framework and the [VIZIA](https://github.com/vizia/vizia) UI library.
 
-![Dust Saturator Cover](https://github.com/Everither/dust-saturator/assets/122586326/2209e888-3313-405d-9ddc-4125b8f117b8)
+![Dust Saturator Cover](https://github.com/Everither/dust-saturator/assets/122586326/2fe5cdb4-72a2-4df1-8e60-20bbc46400f4)
 
 ## How It Works
 
