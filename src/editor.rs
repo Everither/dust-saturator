@@ -14,7 +14,7 @@ struct Data {
 impl Model for Data {}
 
 pub(crate) fn default_state() -> Arc<ViziaState> {
-    ViziaState::new(|| (300, 235))
+    ViziaState::new(|| (300, 250))
 }
 
 pub(crate) fn create(
@@ -55,9 +55,15 @@ pub(crate) fn create(
             .color(Color::white())
             .border_color(Color::white());
 
-            Label::new(cx, "Version: 0.1.0")
+            Label::new(cx, "");
+        
+            ParamButton::new(cx, Data::params, |params| &params.invert)
+            .color(Color::white())
+            .border_color(Color::white());
+
+            Label::new(cx, "Version: 0.1.1")
             .font_size(11.0)
-            .child_top(Pixels(40.0))
+            .child_top(Pixels(15.0))
             .color(Color::rgb(170, 170, 170));
         })
         .background_color(Color::rgb(100, 100, 100))
