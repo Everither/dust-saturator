@@ -1,19 +1,21 @@
 use nih_plug::prelude::*;
 use nih_plug_vizia::ViziaState;
-use std::sync::Arc;
+use std::{sync::Arc, u128::MAX};
 
 mod editor;
 
 // The maximum deviation from the actual sample position
-pub const MAX_AMOUNT: usize = 64;
+pub const MAX_AMOUNT: usize = 100;
+// The minimum deviation from the actual sample position
+pub const MIN_AMOUNT: usize = 0;
 // Max value for curve parameter
 pub const MAX_CURVE: f32 = 1.0;
 // Min value for curve parameter
-pub const MIN_CURVE: f32 = 0.5;
+pub const MIN_CURVE: f32 = 0.1;
 
 pub struct DustSaturator {
     params: Arc<DustSaturatorParams>,
-    previous_buffer: Vec<Vec<f32>>
+    aux_buffer: Vec<Vec<f32>>
 }
 
 #[derive(Params)]
@@ -25,14 +27,17 @@ struct DustSaturatorParams {
     pub amount: IntParam,
 
     #[id = "curve"]  
-    pub curve: FloatParam
+    pub curve: FloatParam,
+
+    #[id = "invert"]  
+    pub invert: BoolParam
 }
 
 impl Default for DustSaturator {
     fn default() -> Self {
         Self {
             params: Arc::new(DustSaturatorParams::default()),
-            previous_buffer: vec![]
+            aux_buffer: vec![]
         }
     }
 }
@@ -55,6 +60,11 @@ impl Default for DustSaturatorParams {
                 "Curve",
                 1.0,
                 FloatRange::Linear { min: MIN_CURVE, max: MAX_CURVE }
+            ),
+
+            invert: BoolParam::new(
+                "Invert",
+                false
             )
         }
     }
@@ -104,11 +114,11 @@ impl Plugin for DustSaturator {
     fn initialize(
         &mut self,
         _audio_io_layout: &AudioIOLayout,
-        buffer_config: &BufferConfig,
-        context: &mut impl InitContext<Self>,
+        _buffer_config: &BufferConfig,
+        _context: &mut impl InitContext<Self>,
     ) -> bool {
         // Set the latency (this is assuming buffer size is fixed)
-        context.set_latency_samples(buffer_config.max_buffer_size);
+        // context.set_latency_samples(buffer_config.max_buffer_size);
 
         true
     }
@@ -124,11 +134,9 @@ impl Plugin for DustSaturator {
         _context: &mut impl ProcessContext<Self>,
     ) -> ProcessStatus {
         let buffer_slice = buffer.as_slice();
-        let amount = self.params.amount.smoothed.next();
-        let curve = self.params.curve.smoothed.next();
-
-        // Make deep copy of the current buffer
-        let mut buffer_deep_copy = vec![];      
+        let amount: f32 = self.params.amount.smoothed.next() as f32;
+        let curve: f32 = self.params.curve.smoothed.next();
+        let invert: bool = self.params.invert.value();
 
         // Scuffed enumeration
         let mut channel_number = 0;
@@ -136,43 +144,44 @@ impl Plugin for DustSaturator {
         // Process left and right channels
         for channel_samples in buffer_slice {
 
-            // Copy of channel samples
-            let mut channel_copy = vec![];
-
-            // Copy the samples
-            for i in 0..channel_samples.len() {
-                channel_copy.push(channel_samples[i]);
+            if self.aux_buffer.len() <= channel_number {
+                self.aux_buffer.push(vec![]);
             }
 
-            // No processing required for the first ever buffer
-            if !self.previous_buffer.is_empty() {
-                // The actual processing
-                for i in 0..self.previous_buffer[channel_number].len() {
-                    if i >= channel_samples.len() {
-                        continue
-                    }
-                    let idx = (
-                        (((self.previous_buffer[channel_number][i]*(amount as f32)).abs()).powf(curve)) * ((amount as f32).powf(MAX_CURVE-curve))
+            for i in 0..channel_samples.len() {
+                if self.aux_buffer[channel_number].len() <= MAX_AMOUNT as usize {
+                    // Upon first launching the plugin, the aux buffer is not (fully) populated yet
+                    self.aux_buffer[channel_number].push(channel_samples[i])
+                } else {
+                    // The actual processing
+
+                    // Calculate new index
+                    let mut idx = (
+                        (((self.aux_buffer[channel_number][0]*amount).abs()).powf(curve)) * (amount.powf(MAX_CURVE-curve))
                     ) as usize;
-                    if i+idx < self.previous_buffer[channel_number].len() {
-                        // When the future sample does not exceed the bounds of the current buffer
-                        channel_samples[i] = self.previous_buffer[channel_number][i+idx];
-                    } else {
-                        // When the future sample is reaching into the next buffer
-                        channel_samples[i] = channel_copy[i+idx -  self.previous_buffer[channel_number].len()];
-                    }    
+
+                    // Cap the index at max amount
+                    if idx > MAX_AMOUNT {
+                        idx = MAX_AMOUNT;
+                    }
+
+                    // Invert when specified
+                    if invert {
+                        idx = MAX_AMOUNT - idx;
+                    }
+
+                    // Append new sample + Serve oldest sample
+                    self.aux_buffer[channel_number].push(channel_samples[i]);
+                    self.aux_buffer[channel_number].remove(0);
+
+                    // Apply the index
+                    channel_samples[i] = self.aux_buffer[channel_number][idx];
                 }
             }
 
             // Increment channel number
             channel_number += 1;
-
-            // Making deep copy
-            buffer_deep_copy.push(channel_copy);
         }
-
-        // Store the current buffer for the next processing cycle to use
-        self.previous_buffer = buffer_deep_copy;
 
         ProcessStatus::Normal
     }
