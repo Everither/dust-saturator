@@ -26,5 +26,7 @@ Take 3 steps from this sample, arriving at the fourth sample (sample at index 3)
 - At 1.0, it behaves as a linear line, meaning more dynamics, shortened duration of distortion
 - At 0.5, it behaves as a square root curve, meaning less dynamics, longer distortion
 
+`Invert` Inverts the algorithm. When enabled, peaks are preserved more, leading to a warmer sound. 
+
 ## Installation
 Download dust_saturator_v0.1.0.vst3.zip from [Releases](https://github.com/Everither/dust-saturation/releases/tag/v0.1.0), unzip and place in your VST3 folder. 
