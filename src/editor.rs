@@ -4,11 +4,11 @@ use nih_plug_vizia::widgets::*;
 use nih_plug_vizia::{assets, create_vizia_editor, ViziaState, ViziaTheming};
 use std::sync::Arc;
 
-use crate::LinearInterpolatorParams;
+use crate::DustSaturatorParams;
 
 #[derive(Lens)]
 struct Data {
-    params: Arc<LinearInterpolatorParams>
+    params: Arc<DustSaturatorParams>
 }
 
 impl Model for Data {}
@@ -18,7 +18,7 @@ pub(crate) fn default_state() -> Arc<ViziaState> {
 }
 
 pub(crate) fn create(
-    params: Arc<LinearInterpolatorParams>,
+    params: Arc<DustSaturatorParams>,
     editor_state: Arc<ViziaState>,
 ) -> Option<Box<dyn Editor>> {
     create_vizia_editor(editor_state, ViziaTheming::Custom, move |cx, _| {
@@ -33,28 +33,40 @@ pub(crate) fn create(
         ResizeHandle::new(cx);
 
         VStack::new(cx, |cx| {
-            Label::new(cx, "Linear Interpolator")
+            Label::new(cx, "Dust Saturator")
                 .font_family(vec![FamilyOwned::Name(String::from(
                     assets::NOTO_SANS_THIN,
                 ))])
+                .color(Color::white())
                 .font_size(30.0)
                 .height(Pixels(50.0))
                 .child_top(Stretch(1.0))
                 .child_bottom(Pixels(0.0));
 
-            Label::new(cx, "Amount").child_top(Pixels(10.0));
+            Label::new(cx, "Amount").color(Color::white()).child_top(Pixels(10.0));
 
-            HStack::new(cx, |cx| {
-                ParamSlider::new(cx, Data::params, |params| &params.amount).width(Pixels(128.0));
-                ParamButton::new(cx,  Data::params, |params| &params.dither).width(Pixels(44.0));
-            }).height(Pixels(40.0));
+            ParamSlider::new(cx, Data::params, |params| &params.amount)
+            .color(Color::white())
+            .border_color(Color::white());
 
-            Label::new(cx, "Tolerance");
+            Label::new(cx, "Curve").color(Color::white()).child_top(Pixels(10.0));
 
-            ParamSlider::new(cx, Data::params, |params| &params.tolerance).width(Pixels(172.0));
-            
+            ParamSlider::new(cx, Data::params, |params| &params.curve)
+            .color(Color::white())
+            .border_color(Color::white());
 
+            Label::new(cx, "");
+        
+            ParamButton::new(cx, Data::params, |params| &params.invert)
+            .color(Color::white())
+            .border_color(Color::white());
+
+            Label::new(cx, "Version: 0.1.1")
+            .font_size(11.0)
+            .child_top(Pixels(15.0))
+            .color(Color::rgb(170, 170, 170));
         })
+        .background_color(Color::rgb(100, 100, 100))
         .row_between(Pixels(0.0))
         .child_left(Stretch(1.0))
         .child_right(Stretch(1.0));

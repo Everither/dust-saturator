@@ -4,5 +4,5 @@
 # [package_name]
 # name = "Human Readable Plugin Name"  # defaults to <package_name>
 
-[linear_interpolator]
-name = "Linear_Interpolator"
+[Dust_Saturator]
+name = "Dust Saturator"

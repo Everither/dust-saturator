@@ -1,7 +1,7 @@
 use nih_plug::prelude::*;
 
-use linear_interpolator::LinearInterpolator;
+use dust_saturator::DustSaturator;
 
 fn main() {
-    nih_export_standalone::<LinearInterpolator>();
+    nih_export_standalone::<DustSaturator>();
 }
