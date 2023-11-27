@@ -818,14 +818,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "dust_saturator"
-version = "0.1.0"
-dependencies = [
- "nih_plug",
- "nih_plug_vizia",
-]
-
-[[package]]
 name = "equivalent"
 version = "1.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1346,6 +1338,14 @@ dependencies = [
  "bitflags 2.4.1",
  "libc",
  "redox_syscall 0.4.1",
+]
+
+[[package]]
+name = "linear_interpolator"
+version = "0.1.0"
+dependencies = [
+ "nih_plug",
+ "nih_plug_vizia",
 ]
 
 [[package]]

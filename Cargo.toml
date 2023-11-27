@@ -1,5 +1,5 @@
 [package]
-name = "dust_saturator"
+name = "linear_interpolator"
 version = "0.1.0"
 edition = "2021"
 authors = ["Evr! <everither.every@gmail.com>"]
