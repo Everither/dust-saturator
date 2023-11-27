@@ -4,7 +4,7 @@ A distortion plugin with a very unique distortion algorithm. Adding upper harmon
 
 Built with the [NIH-plug](https://github.com/robbert-vdh/nih-plug) framework and the [VIZIA](https://github.com/vizia/vizia) UI library.
 
-![Dust Saturator Cover](https://github.com/Everither/dust-saturator/assets/122586326/2209e888-3313-405d-9ddc-4125b8f117b8)
+![Dust Saturator Cover](https://github.com/Everither/dust-saturator/assets/122586326/2fe5cdb4-72a2-4df1-8e60-20bbc46400f4)
 
 ## How It Works
 
@@ -26,16 +26,7 @@ Take 3 steps from this sample, arriving at the fourth sample (sample at index 3)
 - At 1.0, it behaves as a linear line, meaning more dynamics, shortened duration of distortion
 - At 0.5, it behaves as a square root curve, meaning less dynamics, longer distortion
 
-## Setup
-Currently, this plugin assumes fixed size buffers. Please ensure your DAW is using fixed size buffers.
-
-In FL Studio, this is done by going to:
-
-```VST wrapper settings > Troubleshooting > Use fixed sized buffers ```
-
-and enabling it.
-
-![Dust Saturator Setup](https://github.com/Everither/dust-saturator/assets/122586326/4a50dc36-f73f-4eee-87f8-6821322f916e)
+`Invert` Inverts the algorithm. When enabled, peaks are preserved more, leading to a warmer sound. 
 
 ## Installation
-Download dust_saturator_v0.1.0.vst3.zip from [Releases](https://github.com/Everither/dust-saturation/releases/tag/v0.1.0), unzip and place in your VST3 folder. 
+Download dust_saturator_v0.1.1.vst3.zip from [Releases](https://github.com/Everither/dust-saturation/releases/tag/v0.1.1), unzip and place in your VST3 folder. 
